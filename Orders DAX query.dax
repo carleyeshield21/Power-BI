@@ -1,0 +1,13 @@
+﻿EVALUATE
+SUMMARIZE(
+    ADDCOLUMNS(
+        Orders,
+        "Year", YEAR(Orders[Order Date]),     -- Add a Year column
+        "Month", MONTH(Orders[Order Date]),
+        "Day", DAY(Orders[Order Date])		 -- Add a Month column
+    ),
+    [Year],                                  -- Group by Year
+    [Month],  
+    [Day],									-- Group by Month
+    "Count of Dates", COUNTROWS(Orders)      -- Count rows in each group
+)
