@@ -11,3 +11,11 @@ SUMMARIZE(
     [Day],									-- Group by Month
     "Count of Dates", COUNTROWS(Orders)      -- Count rows in each group
 )
+
+EVALUATE
+SUMMARIZE(
+    Orders,                     -- Source table
+    Orders[Order Date],         -- Group by the Order Date
+    "Number of Dates", COUNTROWS(Orders),   -- Count occurrences of each date
+    "Total Sales", SUM(Orders[Sales])       -- Calculate the total sales for each date
+)
