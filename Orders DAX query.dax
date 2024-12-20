@@ -19,3 +19,24 @@ SUMMARIZE(
     "Number of Dates", COUNTROWS(Orders),   -- Count occurrences of each date
     "Total Sales", SUM(Orders[Sales])       -- Calculate the total sales for each date
 )
+
+EVALUATE
+CALCULATETABLE(
+	Orders,
+	Orders[Ship Mode] = "Standard Class",
+	Orders[Sales] >= 1500
+	)
+	
+
+EVALUATE
+SELECTCOLUMNS(
+    CALCULATETABLE(
+        Orders,
+        Orders[Ship Mode] = "Standard Class",  -- Filter rows where Ship Mode is Standard Class
+        Orders[Sales] >= 1500                 -- Filter rows where Sales >= 1500
+    ),
+    "Order Date", Orders[Order Date],         -- Select Order Date column
+    "Ship Mode", Orders[Ship Mode],           -- Select Ship Mode column
+    "Customer Name", Orders[Customer Name],    -- Select Customer Name column
+    "Sales", Orders[Sales]
+)
