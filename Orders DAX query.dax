@@ -56,3 +56,51 @@ SUMMARIZE(
     "Categories", COUNTROWS(Orders),   -- Count occurrences of category
     "Total Sales", SUM(Orders[Sales])       -- Calculate the total sales for each category
 )
+
+EVALUATE
+SUMMARIZE(
+    Orders,                     -- Source table
+    Orders[Sub-Category],         -- Group by the Sub Category
+    "Sub Category", COUNTROWS(Orders),   -- Count occurrences of subcategory
+    "Total Sales", SUM(Orders[Sales])       -- Calculate the total sales for each sub category
+)
+
+EVALUATE
+TOPN(
+    3,                                     -- Return the top 3 rows
+    SUMMARIZE(
+        Orders,                            -- Source table
+        Orders[Sub-Category],             -- Group by Sub-Category
+        "Sub Category", COUNTROWS(Orders),-- Count occurrences of subcategory
+        "Total Sales", SUM(Orders[Sales]) -- Calculate total sales for each subcategory
+    ),
+    [Total Sales],                        -- Sort by Total Sales
+    DESC                                  -- Sort in descending order
+)
+
+EVALUATE VALUES(Orders[Category])
+
+EVALUATE
+CALCULATETABLE(
+    Orders,                             -- Base table
+    Orders[Category] = "Technology",   -- Filter: Only Electronics category
+    Orders[Sales] > 1000                -- Filter: Sales greater than 1000
+)
+
+EVALUATE
+SELECTCOLUMNS(
+	CALCULATETABLE(
+	    Orders,                             -- Base table
+	    Orders[Category] = "Technology",   -- Filter: Only Electronics category
+	    Orders[Sales] > 1000                -- Filter: Sales greater than 1000
+	),
+	Orders[Product Name],
+	Orders[Sales]
+)
+
+EVALUATE
+SUMMARIZE(
+	Orders,
+	Orders[Product Name],
+	"Total Per Product", COUNTROWS(Orders)
+	)
