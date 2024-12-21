@@ -40,3 +40,19 @@ SELECTCOLUMNS(
     "Customer Name", Orders[Customer Name],    -- Select Customer Name column
     "Sales", Orders[Sales]
 )
+
+EVALUATE
+SUMMARIZE(
+    Orders,                     -- Source table
+    Orders[Product Name],         -- Group by the Product Name
+    "Number of Products", COUNTROWS(Orders),   -- Count occurrences of product
+    "Total Sales", SUM(Orders[Sales])       -- Calculate the total sales for product
+)
+
+EVALUATE
+SUMMARIZE(
+    Orders,                     -- Source table
+    Orders[Category],         -- Group by the Category
+    "Categories", COUNTROWS(Orders),   -- Count occurrences of category
+    "Total Sales", SUM(Orders[Sales])       -- Calculate the total sales for each category
+)
