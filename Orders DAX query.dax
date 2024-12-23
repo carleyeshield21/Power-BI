@@ -101,7 +101,91 @@ SELECTCOLUMNS(
 EVALUATE                                  -- Used to execute and return the result of a table expression
 SUMMARIZE(                                -- Aggregates data by grouping and calculating
     Orders,                               -- Base table to summarize
-    Orders[Product Name],                 -- Grouping column: Groups the data by Product Name
+    Orders[Product Name],
+    "Total Sales", SUM(Orders[Sales]),    -- Grouping column: Groups the data by Product Name
     "Total Per Product",                  -- Name of the calculated column in the summarized table
     COUNTROWS(Orders)                     -- Calculation: Counts the number of rows for each Product Name
 )
+
+
+EVALUATE         
+TOPN(
+    10,                                     -- Top 10 rows
+    SUMMARIZE(                             
+        Orders,                            
+        Orders[Product Name],              
+        "Total Sales", SUM(Orders[Sales]), -- Total sales per product
+        "Total Per Product",               
+        COUNTROWS(Orders)                  -- Total number of orders per product
+    ),
+    [Total Sales],                          -- Ranking criteria (Total Sales)
+    DESC                                    -- Descending order
+)
+
+
+EVALUATE
+TOPN(10,	-- Used to execute and return the result of a table expression
+SUMMARIZE(                                -- Aggregates data by grouping and calculating
+    Orders,                               -- Base table to summarize
+    Orders[Product Name],
+    "Total Sales", SUM(Orders[Sales]),    -- Grouping column: Groups the data by Product Name
+    "Total Per Product",                  -- Name of the calculated column in the summarized table
+    COUNTROWS(Orders)                     -- Calculation: Counts the number of rows for each Product Name
+)
+)
+
+EVALUATE
+    SUMMARIZE(
+        Orders, 
+        Orders[Product Name],                   -- Group by Product Name
+        "Product Count", COUNTROWS(Orders), 
+        "Total Sales", SUM(Orders[Sales])       -- Count the number of rows for each product
+    )
+ORDER BY
+	[Product Count] DESC
+	
+	
+EVALUATE
+    SUMMARIZE(
+        Orders, 
+        Orders[Product Name],                   -- Group by Product Name
+        "Product Count", COUNTROWS(Orders), 
+        "Total Sales", SUM(Orders[Sales])       -- Calculate the total sales for each product
+    )
+ORDER BY
+    [Total Sales] DESC                          -- Sort by Total Sales in descending order
+    
+    
+EVALUATE
+	TOPN(10,
+    SUMMARIZE(
+        Orders, 
+        Orders[Product Name],                   -- Group by Product Name
+        "Product Count", COUNTROWS(Orders), 
+        "Total Sales", SUM(Orders[Sales])       -- Calculate the total sales for each product
+    )
+   )  
+
+EVALUATE
+    TOPN(
+        10,                                      -- Return the top 10 rows
+        SUMMARIZE(
+            Orders, 
+            Orders[Product Name],                -- Group by Product Name
+            "Product Count", COUNTROWS(Orders), 
+            "Total Sales", SUM(Orders[Sales])    -- Calculate the total sales for each product
+        ),
+        [Total Sales],                           -- Rank by Total Sales
+        DESC                                     -- Descending order
+    )
+    
+
+EVALUATE
+    SUMMARIZE(
+        Orders, 
+        Orders[Product Name],                   -- Group by Product Name
+        "Product Count", COUNTROWS(Orders), 
+        "Total Sales", SUM(Orders[Sales])       -- Calculate the total sales for each product
+    )
+ORDER BY
+    [Total Sales] DESC 
