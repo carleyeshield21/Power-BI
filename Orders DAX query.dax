@@ -189,3 +189,44 @@ EVALUATE
     )
 ORDER BY
     [Total Sales] DESC 
+
+
+
+EVALUATE
+    TOPN(
+        3,                                      -- Top 3 rows
+        SUMMARIZE(
+            Orders, 
+            Orders[Category],                   -- Group by Category
+            Orders[Product Name],               -- Group by Product Name
+            "Total Sales", SUM(Orders[Sales])   -- Calculate total sales for each product
+        ),
+        [Total Sales],                          -- Rank by Total Sales
+        DESC                                    -- Descending order
+    )
+
+EVALUATE
+CALCULATETABLE(
+	SUMMARIZE(Orders,
+			  Orders[Sub-Category]
+	)
+)
+
+EVALUATE
+SUMMARIZE(Orders,
+		  Orders[Sub-Category]
+		  )
+		  
+EVALUATE
+CALCULATETABLE(
+	VAR Variable = SUMMARIZE(Orders,
+			  Orders[Sub-Category]
+	)
+	RETURN Variable
+)
+
+EVALUATE
+CALCULATETABLE(
+    VAR Variable = SUMMARIZE(Orders, Orders[Sub-Category])
+    RETURN Variable
+)
