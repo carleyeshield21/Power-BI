@@ -230,3 +230,37 @@ CALCULATETABLE(
     VAR Variable = SUMMARIZE(Orders, Orders[Sub-Category])
     RETURN Variable
 )
+
+EVALUATE
+GENERATE(
+	VALUES(Orders[Category]),
+	VALUES(Orders[Sub-Category])
+	)
+	
+EVALUATE
+GENERATE(
+	VALUES(Orders[Category]),
+	CALCULATETABLE(
+    SUMMARIZE(Orders, Orders[Sub-Category])
+	)
+	
+EVALUATE
+GENERATE (
+    VALUES ( Orders[Category] ),                -- Get unique categories from Orders
+    CALCULATETABLE (
+        VAR ProductsSold =
+            SUMMARIZE ( 
+                Orders, 
+                Orders[Product Name],             -- Group by Product Name
+                "Total Sales", SUM(Orders[Sales]) -- Calculate total sales per product
+            )
+        VAR Top3Products =
+            TOPN ( 
+                3,                               -- Select top 3 products based on total sales
+                ProductsSold,                     -- Table to filter
+                [Total Sales],                    -- Column to sort by
+                DESC                              -- Sort in descending order (highest sales)
+            )
+        RETURN Top3Products
+    )
+)
