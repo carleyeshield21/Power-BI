@@ -264,3 +264,43 @@ GENERATE (
         RETURN Top3Products
     )
 )
+
+EVALUATE
+    SUMMARIZE(
+        Orders, 
+        Orders[Order Date],
+        "Product Count", COUNTROWS(Orders)
+    )
+    
+
+EVALUATE
+SUMMARIZE(
+    ADDCOLUMNS(
+        Orders,
+        "Order Year", YEAR(Orders[Order Date])  -- Add a calculated column for the year
+    ),
+    [Order Year],                              -- Group by the new "Order Year" column
+    "Product Count", COUNTROWS(Orders)         -- Calculate the product count
+)
+
+EVALUATE
+SUMMARIZE(
+    ADDCOLUMNS(
+        Orders,
+        "Order Year", YEAR(Orders[Order Date])-- Add a calculated column for the year
+    
+    ),
+    [Order Year],                              -- Group by the new "Order Year" column
+    "Product Count", COUNTROWS(Orders)         -- Calculate the product count
+)
+
+EVALUATE
+SUMMARIZE(
+    ADDCOLUMNS(
+        Orders,
+        "Order Year", YEAR(Orders[Order Date])  -- Add a calculated column for the year dynamically
+    ),
+    [Order Year],                              -- Group by the newly created "Order Year"
+    "Order Count", COUNTROWS(Orders),         -- Count of orders for each year
+    "Total Sales", SUM(Orders[Sales])         -- Total sales for each year
+)
