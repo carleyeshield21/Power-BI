@@ -304,3 +304,27 @@ SUMMARIZE(
     "Order Count", COUNTROWS(Orders),         -- Count of orders for each year
     "Total Sales", SUM(Orders[Sales])         -- Total sales for each year
 )
+
+EVALUATE
+SUMMARIZECOLUMNS(
+    Orders[Order Date],                      -- Group by Product Name
+    "Date Count", COUNTROWS(Orders)        -- Add a calculated column for count
+)
+
+EVALUATE
+    SUMMARIZE(
+        Orders, 
+        Orders[Order Date],
+        "Date Count", COUNTROWS(Orders)
+    )
+
+EVALUATE
+GROUPBY(
+    Orders,
+    Orders[Order ID],                         -- Group by Category
+    "Total Sales Per Category",              -- New column
+    SUMX(
+        CURRENTGROUP(),                      -- Refers to the current group (rows in the same category)
+        Orders[Sales]                         -- Sum Sales within each group
+    )
+)
