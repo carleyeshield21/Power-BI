@@ -328,3 +328,44 @@ GROUPBY(
         Orders[Sales]                         -- Sum Sales within each group
     )
 )
+
+EVALUATE
+ROW(
+    "Total Sales", SUM(Orders[Sales])
+)
+
+EVALUATE
+SUMMARIZE(
+    Orders,
+    Orders[Product Name],
+    Orders[Category]
+)
+
+EVALUATE
+SUMMARIZE(
+    FILTER(Orders, Orders[Category] = "Furniture"),
+    Orders[Product Name]
+)
+
+EVALUATE
+SUMMARIZE(
+    Orders,
+    Orders[Product Name],
+    Orders[Category]
+)
+ORDER BY
+	Orders[Category],
+//	Orders[Product Name]
+
+EVALUATE
+SUMMARIZE(
+    Orders,
+    Orders[Category],                 -- Group by Category
+    "Total Sales", SUM(Orders[Sales]) -- Calculate Total Sales
+)
+
+EVALUATE
+SUMMARIZECOLUMNS(
+    Orders[Category],                 -- Group by Category
+    "Total Sales", SUM(Orders[Sales]) -- Calculate Total Sales
+)
