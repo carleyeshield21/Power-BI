@@ -1,4 +1,39 @@
 ﻿EVALUATE
+DATATABLE (
+    "Brand", STRING,
+    "Quantity", INTEGER,
+    "Sales Amount", INTEGER,
+    {
+        { "Brand A", 1, 100 },
+        { "Brand A", 2, 200 },
+        { "Brand A", 3, 300 },
+        { "Brand B", 1, 400 },
+        { "Brand B", 4, 500 },
+        { "Brand C", 2, 600 },
+        { "Brand C", 1, 700 }
+    }
+)
+
+EVALUATE
+DATATABLE (
+    "Brand", STRING,
+    {
+        { "Brand A" },
+        { "Brand B" },
+        { "Brand C" }
+    }
+)
+
+BrandsTable = DATATABLE (
+    "Brand", STRING,
+    {
+        { "Brand A" },
+        { "Brand B" },
+        { "Brand C" }
+    }
+)
+
+﻿EVALUATE
 SUMMARIZE(
     ADDCOLUMNS(
         Orders,
@@ -368,4 +403,26 @@ EVALUATE
 SUMMARIZECOLUMNS(
     Orders[Category],                 -- Group by Category
     "Total Sales", SUM(Orders[Sales]) -- Calculate Total Sales
+)
+
+EVALUATE
+	'Product'
+
+EVALUATE
+	Sales
+
+
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( Sales[Brand] ),
+    "FilterTabMeasure", 
+    CALCULATE (
+        CALCULATE (
+            SUM(Sales[Sales Amount]),
+            FILTER (
+                Sales,
+                Sales[Quantity] > 1
+            )
+        )
+    )
 )
