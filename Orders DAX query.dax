@@ -1,4 +1,54 @@
-﻿EVALUATE
+﻿DEFINE
+VAR t1 =
+ SELECTCOLUMNS ( CALENDAR ( 1, 10000 ), "x", [Date] )
+VAR t2 =
+ SELECTCOLUMNS ( CALENDAR ( 1, 10000 ), "y", [Date] )
+VAR c =
+ CROSSJOIN ( t1, t2 )
+VAR result =
+ COUNTROWS ( c )
+EVALUATE
+ ROW ( "x", result )
+
+EVALUATE
+	'Product'
+
+EVALUATE
+	Sales
+
+
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( Sales[Brand] ),
+    "FilterTabMeasure", 
+    CALCULATE (  // Outer CALCULATE
+        CALCULATE (  // Inner CALCULATE
+            SUM(Sales[Sales Amount]), // Base aggregation
+            FILTER ( // Row-level filter
+                Sales,
+                Sales[Quantity] > 1
+            )
+        )
+    )
+)
+
+
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( Sales[Brand] ),
+    "FilterTabMeasure", 
+
+        CALCULATE (
+            SUM(Sales[Sales Amount]),
+            FILTER (
+                Sales,
+                Sales[Quantity] > 1
+            )
+        )
+    
+)
+
+EVALUATE
 DATATABLE (
     "Brand", STRING,
     "Quantity", INTEGER,
@@ -403,26 +453,4 @@ EVALUATE
 SUMMARIZECOLUMNS(
     Orders[Category],                 -- Group by Category
     "Total Sales", SUM(Orders[Sales]) -- Calculate Total Sales
-)
-
-EVALUATE
-	'Product'
-
-EVALUATE
-	Sales
-
-
-EVALUATE
-ADDCOLUMNS (
-    VALUES ( Sales[Brand] ),
-    "FilterTabMeasure", 
-    CALCULATE (
-        CALCULATE (
-            SUM(Sales[Sales Amount]),
-            FILTER (
-                Sales,
-                Sales[Quantity] > 1
-            )
-        )
-    )
 )
